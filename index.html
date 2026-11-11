@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Money Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <span class="brand-icon">💰</span>
+            <span class="brand-text">MoneyManager</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Dashboard</span>
+            </a>
+
+            <div class="nav-section">
+                <div class="nav-section-title">💼 Keuangan Pribadi</div>
+                <a href="#" class="nav-item" data-page="account" data-account="cash">
+                    <span class="nav-icon">💵</span>
+                    <span class="nav-text">Dompet Cash</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="gopay">
+                    <span class="nav-icon">📱</span>
+                    <span class="nav-text">GoPay</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="mandiri">
+                    <span class="nav-icon">🏦</span>
+                    <span class="nav-text">Bank Mandiri</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="bca">
+                    <span class="nav-icon">🏦</span>
+                    <span class="nav-text">Bank BCA</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">🏫 Keuangan Organisasi</div>
+                <a href="#" class="nav-item" data-page="account" data-account="hadroh">
+                    <span class="nav-icon">🎵</span>
+                    <span class="nav-text">Donasi Hadroh</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="kas-mahad">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Kas Pengurus Mahad</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="infak-jumat">
+                    <span class="nav-icon">🕌</span>
+                    <span class="nav-text">Infak Jumat</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="sanksi">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">Sanksi Internal</span>
+                </a>
+                <a href="#" class="nav-item" data-page="account" data-account="ika-banin">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">IKA Banin</span>
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <p>v1.0 &mdash; Data tersimpan lokal</p>
+        </div>
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <h1 class="page-title" id="page-title">Dashboard</h1>
+            <div class="topbar-actions">
+                <span class="date-display" id="date-display"></span>
+            </div>
+        </header>
+        <div class="content" id="app-content">
+            <!-- Dynamic content rendered here by JS -->
+        </div>
+    </main>
+
+    <!-- Transaction Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Tambah Transaksi</h2>
+                <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+            </div>
+            <form id="transaction-form" novalidate>
+                <div class="modal-body">
+                    <input type="hidden" id="form-id">
+                    <input type="hidden" id="form-account">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="form-date">Tanggal <span class="required">*</span></label>
+                            <input type="date" class="form-input" id="form-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="form-type">Tipe <span class="required">*</span></label>
+                            <select class="form-select" id="form-type" required>
+                                <option value="income">💚 Pemasukan</option>
+                                <option value="expense">❤️ Pengeluaran</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-title">Judul Kegiatan <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="form-title" placeholder="Masukkan judul kegiatan" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="form-amount">Nominal (Rp) <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="form-amount" placeholder="0" required inputmode="numeric">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="form-method">Metode Pembayaran <span class="required">*</span></label>
+                            <select class="form-select" id="form-method" required>
+                                <!-- Populated by JS based on account type -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-category">Kategori</label>
+                        <input type="text" class="form-input" id="form-category" placeholder="Contoh: Makan, Transport, dll.">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-note">Catatan</label>
+                        <textarea class="form-textarea" id="form-note" placeholder="Tambahkan catatan (opsional)" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="form-reference">No. Referensi</label>
+                        <input type="text" class="form-input" id="form-reference" placeholder="No. referensi transfer (opsional)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="modal-cancel">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="modal-save">💾 Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal-overlay">
+        <div class="modal modal-sm">
+            <div class="modal-header">
+                <h2 class="modal-title">⚠️ Hapus Transaksi</h2>
+                <button class="modal-close" id="delete-modal-close" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="delete-message">Apakah Anda yakin ingin menghapus transaksi ini? Tindakan ini tidak dapat dibatalkan.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="delete-cancel">Batal</button>
+                <button class="btn btn-danger" id="delete-confirm">🗑️ Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
